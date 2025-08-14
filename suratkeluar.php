@@ -144,7 +144,7 @@ $suratKeluar = mysqli_query($conn, $queryKeluar);
                 <?php endwhile; ?>
               <?php else: ?>
                 <tr>
-                  <td colspan="8" class="text-center">Tidak ada surat keluar ditemukan.</td>
+                  <td colspan="8" class="text-center">Tidak ada surat ditemukan.</td>
                 </tr>
               <?php endif; ?>
             </tbody>
