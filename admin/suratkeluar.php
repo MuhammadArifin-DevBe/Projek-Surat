@@ -5,7 +5,7 @@ if (!isset($_SESSION["login"])) {
   exit;
 }
 
-require 'function.php';
+require '../function.php';
 
 $email = $_SESSION['email'];
 $cari = isset($_GET['cari']) ? $_GET['cari'] : '';
@@ -32,7 +32,7 @@ $suratKeluar = mysqli_query($conn, $queryKeluar);
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://unpkg.com/feather-icons"></script>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <style>
   body {
@@ -45,7 +45,7 @@ $suratKeluar = mysqli_query($conn, $queryKeluar);
 <body>
   <nav class="navbar navbar-expand-lg bg-primary" id="navbar">
     <div class="container-fluid mb-3 mt-3">
-      <img src="img/uniska.png" alt="Logo Uniska">
+      <img src="../img/uniska.png" alt="Logo Uniska">
       <a class="navbar-brand fw-bold text-white" href="#">
         Sistem Surat Keluar & Masuk<br>
         <small class="fw-normal">Laboratorium Komputer</small>
@@ -74,6 +74,9 @@ $suratKeluar = mysqli_query($conn, $queryKeluar);
       </a>
       <a href="statistik.php" class="<?= basename($_SERVER['PHP_SELF']) === 'statistik.php' ? 'active' : '' ?>">
         <i data-feather="bar-chart"></i> Statistik
+      </a>
+      <a href="user.php" class="<?= basename($_SERVER['PHP_SELF']) === 'user.php' ? 'active' : '' ?>">
+        <i data-feather="users"></i> Data Pengguna
       </a>
     </div>
 
@@ -106,7 +109,7 @@ $suratKeluar = mysqli_query($conn, $queryKeluar);
       </div>
       <div class="card-body p-0">
         <div class="table-responsive">
-          <table class="table table-bordered m-0">
+          <table class="table table-bordered m-0 text-center">
             <thead class="table-light">
               <tr>
                 <th>Jenis</th>
@@ -136,9 +139,11 @@ $suratKeluar = mysqli_query($conn, $queryKeluar);
                         Tidak Ada Pesan
                       <?php endif; ?>
                     </td>
-                    <td style="display: flex; gap: 5px;">
-                      <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm">Edit</a>
-                      <a href="hapus.php?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</a>
+                    <td>
+                      <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-primary btn-sm"> <i data-feather="edit-2"></i>
+                      </a>
+                      <a href="hapus.php?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')"> <i data-feather="trash-2"></i>
+                      </a>
                     </td>
                   </tr>
                 <?php endwhile; ?>

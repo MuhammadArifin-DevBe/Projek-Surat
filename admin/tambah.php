@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'function.php';
+require '../function.php';
 
 if (!isset($_SESSION['login']) || !isset($_SESSION['email'])) {
   header("Location: login.php");
@@ -117,50 +117,6 @@ $surat = mysqli_query($conn, "SELECT * FROM surat WHERE jenis='keluar' ORDER BY 
       </form>
     </div>
   </div>
-
-  <div class="card">
-    <div class="card-header bg-secondary text-white">Daftar Surat Keluar</div>
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table table-bordered m-0">
-          <thead class="table-light">
-            <tr>
-              <th>Kategori</th>
-              <th>Nomor</th>
-              <th>Tanggal</th>
-              <th>Penerima</th>
-              <th>Perihal</th>
-              <th>Lampiran</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php while ($row = mysqli_fetch_assoc($surat)) : ?>
-              <tr>
-                <td><?= htmlspecialchars($row['kategori']) ?></td>
-                <td><?= htmlspecialchars($row['nomor']) ?></td>
-                <td><?= htmlspecialchars($row['tanggal']) ?></td>
-                <td><?= htmlspecialchars($row['penerima']) ?></td>
-                <td><?= htmlspecialchars($row['perihal']) ?></td>
-                 <td>
-                    <?php if ($row['isi_pesan']) : ?>
-                      <a href="<?= htmlspecialchars($row['isi_pesan']) ?>" target="_blank">Lihat</a>
-                    <?php else : ?>
-                      Tidak Ada Pesan
-                    <?php endif; ?>
-                  </td>
-                  <td>
-                    <a href="edit.php?id=<?= $row['id'] ?>"><i data-feather="edit"></i></a> |
-                    <a href="hapus.php?id=<?= $row['id'] ?>" onclick="return confirm('Yakin ingin menghapus?')"><i data-feather="trash-2"></i></a>
-                  </td>
-              </tr>
-            <?php endwhile; ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
 feather.replace();
 

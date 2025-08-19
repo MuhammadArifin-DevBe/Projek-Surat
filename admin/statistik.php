@@ -1,5 +1,7 @@
 <?php
-require 'function.php';
+require '../function.php';
+
+// Ambil data jumlah surat masuk per tanggal
 $dataMasuk = mysqli_query($conn, "
     SELECT DATE(tanggal) as tgl, COUNT(*) as total
     FROM surat
@@ -17,31 +19,38 @@ $dataKeluar = mysqli_query($conn, "
     ORDER BY DATE(tanggal)
 ");
 
-// Susun array untuk label tanggal dan nilai
+// Simpan hasil query ke array sementara
+$dataM = [];
+$dataK = [];
+$allDates = [];
+
+// Masukkan data masuk
+while ($row = mysqli_fetch_assoc($dataMasuk)) {
+  $dataM[$row['tgl']] = $row['total'];
+  $allDates[] = $row['tgl'];
+}
+
+// Masukkan data keluar
+while ($row = mysqli_fetch_assoc($dataKeluar)) {
+  $dataK[$row['tgl']] = $row['total'];
+  $allDates[] = $row['tgl'];
+}
+
+// Hilangkan duplikat tanggal & urutkan
+$allDates = array_unique($allDates);
+sort($allDates);
+
+// Susun data final untuk chart
 $labels = [];
 $masukData = [];
 $keluarData = [];
 
-while ($row = mysqli_fetch_assoc($dataMasuk)) {
-  $labels[] = $row['tgl'];
-  $masukData[] = $row['total'];
+foreach ($allDates as $tgl) {
+  $labels[] = $tgl;
+  $masukData[] = isset($dataM[$tgl]) ? $dataM[$tgl] : 0;
+  $keluarData[] = isset($dataK[$tgl]) ? $dataK[$tgl] : 0;
 }
-
-// Sinkronkan data keluar sesuai tanggal di label
-foreach ($labels as $tgl) {
-  $found = false;
-  mysqli_data_seek($dataKeluar, 0);
-  while ($row = mysqli_fetch_assoc($dataKeluar)) {
-    if ($row['tgl'] === $tgl) {
-      $keluarData[] = $row['total'];
-      $found = true;
-      break;
-    }
-  }
-  if (!$found) {
-    $keluarData[] = 0;
-  }
-} ?>
+?>
 
 <!doctype html>
 <html lang="en">
@@ -52,7 +61,7 @@ foreach ($labels as $tgl) {
   <title>Statistik Surat</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://unpkg.com/feather-icons"></script>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <style>
@@ -67,10 +76,10 @@ foreach ($labels as $tgl) {
   <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg bg-primary">
     <div class="container-fluid mb-3 mt-3">
-      <img src="img/uniska.png" alt="Logo Uniska">
+      <img src="../img/uniska.png" alt="Logo Uniska">
       <a class="navbar-brand fw-bold" href="#">
         Sistem Surat Keluar & Masuk<br>
-        <small class="fw-normal">Labolatorium Komputer</small>
+        <small class="fw-normal">Laboratorium Komputer</small>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText">
         <span class="navbar-toggler-icon"></span>
@@ -101,6 +110,8 @@ foreach ($labels as $tgl) {
       <a href="statistik.php" class="<?= basename($_SERVER['PHP_SELF']) === 'statistik.php' ? 'active' : '' ?>">
         <i data-feather="bar-chart"></i> Statistik
       </a>
+      <a href="user.php" class="<?= basename($_SERVER['PHP_SELF']) === 'user.php' ? 'active' : '' ?>">
+        <i data-feather="users"></i> Data Pengguna
     </div>
 
 
@@ -127,27 +138,44 @@ foreach ($labels as $tgl) {
           datasets: [{
               label: 'Surat Masuk',
               data: <?= json_encode($masukData) ?>,
-              borderColor: 'rgba(54, 162, 235, 1)',
+              borderColor: 'rgba(98, 209, 97, 1)',
               backgroundColor: 'rgba(54, 162, 235, 0.2)',
-              fill: true,
-              tension: 0.3
+              fill: false, // tidak ada area warna di bawah garis
+              tension: 0, // garis patah-patah, bukan melengkung
+              pointRadius: 3, // titik data kecil
+              pointHoverRadius: 6
             },
             {
               label: 'Surat Keluar',
               data: <?= json_encode($keluarData) ?>,
-              borderColor: 'rgba(255, 99, 132, 1)',
+              borderColor: 'rgba(255, 44, 44, 1)',
               backgroundColor: 'rgba(255, 99, 132, 0.2)',
-              fill: true,
-              tension: 0.3
+              fill: false,
+              tension: 0,
+              pointRadius: 3,
+              pointHoverRadius: 6
             }
           ]
         },
         options: {
           responsive: true,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          plugins: {
+            tooltip: {
+              enabled: true,
+              mode: 'nearest',
+              intersect: false
+            }
+          },
           scales: {
             y: {
               beginAtZero: true,
-              stepSize: 1
+              ticks: {
+                stepSize: 1
+              }
             }
           }
         }
