@@ -14,7 +14,7 @@ $cari = isset($_GET['cari']) ? trim($_GET['cari']) : '';
 $kategoriFilter = isset($_GET['kategori']) ? trim($_GET['kategori']) : '';
 
 // Query awal (string, bukan langsung mysqli_query)
-$queryMasuk = "SELECT * FROM surat WHERE jenis = 'keluar'";
+$queryMasuk = "SELECT * FROM surat WHERE jenis = 'masuk'";
 $params = [];
 $types = "";
 
@@ -100,9 +100,6 @@ $suratMasuk = mysqli_stmt_get_result($stmt);
     <a href="suratkeluar.php" class="<?= basename($_SERVER['PHP_SELF']) === 'suratkeluar.php' ? 'active' : '' ?>">
       <i data-feather="send"></i> Surat Keluar
     </a>
-    <a href="statistik.php" class="<?= basename($_SERVER['PHP_SELF']) === 'statistik.php' ? 'active' : '' ?>">
-      <i data-feather="bar-chart"></i> Statistik
-    </a>
   </div>
 
   <!-- Form search -->
@@ -114,9 +111,11 @@ $suratMasuk = mysqli_stmt_get_result($stmt);
       </div>
       <select name="kategori" class="form-select" style="max-width: 200px;" onchange="this.form.submit()">
         <option value="">Semua Kategori</option>
-        <option value="UND" <?= ($kategoriFilter == 'UND') ? 'selected' : '' ?>>Undangan</option>
-        <option value="EDR" <?= ($kategoriFilter == 'EDR') ? 'selected' : '' ?>>Edaran</option>
-        <option value="PNJ" <?= ($kategoriFilter == 'PNJ') ? 'selected' : '' ?>>Penunjukan</option>
+        <option value="SPm" <?= ($kategoriFilter == 'SPm') ? 'selected' : '' ?>>Permohonan</option>
+        <option value="SU" <?= ($kategoriFilter == 'SU') ? 'selected' : '' ?>>Undangan</option>
+        <option value="SP" <?= ($kategoriFilter == 'SP') ? 'selected' : '' ?>>Pemberitahuan</option>
+        <option value="ST" <?= ($kategoriFilter == 'TP') ? 'selected' : '' ?>>Tugas</option>
+        <option value="SPn" <?= ($kategoriFilter == 'SPn') ? 'selected' : '' ?>>Peminjaman</option>
       </select>
       <a href="tambah_surat_masuk.php" class="btn btn-outline-primary"><i data-feather="plus"></i> Tambah Surat</a>
     </form>

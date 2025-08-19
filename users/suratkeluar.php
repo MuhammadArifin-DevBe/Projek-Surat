@@ -72,9 +72,6 @@ $suratKeluar = mysqli_query($conn, $queryKeluar);
       <a href="suratkeluar.php" class="<?= basename($_SERVER['PHP_SELF']) === 'suratkeluar.php' ? 'active' : '' ?>">
         <i data-feather="send"></i> Surat Keluar
       </a>
-      <a href="statistik.php" class="<?= basename($_SERVER['PHP_SELF']) === 'statistik.php' ? 'active' : '' ?>">
-        <i data-feather="bar-chart"></i> Statistik
-      </a>
     </div>
 
 

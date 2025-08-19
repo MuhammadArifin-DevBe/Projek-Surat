@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'function.php';
+require '../function.php';
 
 if (!isset($_SESSION['login']) || !isset($_SESSION['email'])) {
   header("Location: login.php");
@@ -89,14 +89,14 @@ $surat = mysqli_query($conn, "SELECT * FROM surat ORDER BY id DESC");
         <?php endif; ?>
 
         <form action="" method="post" enctype="multipart/form-data">
-          <!-- <div class="mb-3">
+          <div class="mb-3">
             <label for="jenis" class="form-label">Jenis Surat</label>
             <select class="form-select" id="jenis" name="jenis" required>
               <option selected disabled>Pilih Jenis</option>
               <option value="masuk">Surat Masuk</option>
               <option value="keluar">Surat Keluar</option>
             </select>
-          </div> -->
+          </div>
 
           <div class="mb-3">
             <label for="kategori" class="form-label">Kategori Surat</label>
@@ -105,7 +105,7 @@ $surat = mysqli_query($conn, "SELECT * FROM surat ORDER BY id DESC");
               <option value="SU">Undangan</option>
               <option value="SP">Pemberitahuan</option>
               <option value="ST">Tugas</option>
-              <option value="SPn">Peminjaman</option>
+              <otipon value="SPn">Peminjaman</otipon>
             </select>
           </div>
 
