@@ -1,5 +1,5 @@
 <?php
-require 'function.php';
+require '../function.php';
 
 if (!isset($_GET['id'])) {
   echo "ID tidak ditemukan!";

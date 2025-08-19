@@ -4,7 +4,7 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php");
     exit;
 }
-include 'function.php';
+include '../function.php';
 ?>
 
 <head>
@@ -13,7 +13,7 @@ include 'function.php';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <style>
     body {
@@ -27,7 +27,7 @@ include 'function.php';
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-primary" id="navbar">
         <div class="container-fluid mb-3 mt-3">
-            <img src="img/uniska.png" alt="Logo Uniska">
+            <img src="../img/uniska.png" alt="Logo Uniska">
             <a class="navbar-brand fw-bold text-white" href="#">
                 Sistem Surat Keluar & Masuk<br>
                 <small class="fw-normal">Laboratorium Komputer</small>
@@ -56,6 +56,9 @@ include 'function.php';
             </a>
             <a href="statistik.php" class="<?= basename($_SERVER['PHP_SELF']) === 'statistik.php' ? 'active' : '' ?>">
                 <i data-feather="bar-chart"></i> Statistik
+            </a>
+            <a href="user.php" class="<?= basename($_SERVER['PHP_SELF']) === 'user.php' ? 'active' : '' ?>">
+                <i data-feather="users"></i> Data Pengguna
             </a>
         </div>
 

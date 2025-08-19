@@ -129,30 +129,45 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <h2 class="mb-3" style="color: #333;">Register</h2>
 
     <form action="" method="POST">
+      <!-- Username -->
       <div class="mb-3 text-start">
-        <input type="text" class="form-control <?php if (isset($errors['username'])) echo 'is-invalid'; ?>" 
-               name="username" placeholder="Masukkan username" 
-               value="<?= htmlspecialchars($_POST['username'] ?? '') ?>">
+        <input type="text" 
+          class="form-control <?php if (isset($errors['username'])) echo 'is-invalid'; ?>"
+          name="username" 
+          placeholder="Masukkan username"
+          value="<?= htmlspecialchars($_POST['username'] ?? '') ?>">
         <?php if (isset($errors['username'])): ?>
           <div class="invalid-feedback"><?= $errors['username'] ?></div>
         <?php endif; ?>
       </div>
 
-      <div class="mb-3 text-start">
-        <input type="email" class="form-control <?php if (isset($errors['email'])) echo 'is-invalid'; ?>" 
-               name="email" placeholder="Masukkan email" 
-               value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+      <!-- Email -->
+      <div class="mb-3 text-start position-relative">
+        <input type="email" 
+          class="form-control <?php if (isset($errors['email'])) echo 'is-invalid'; ?>"
+          name="email" 
+          placeholder="Masukkan email"
+          value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
         <?php if (isset($errors['email'])): ?>
           <div class="invalid-feedback"><?= $errors['email'] ?></div>
         <?php endif; ?>
       </div>
-
-      <div class="mb-3 text-start">
-        <input type="password" class="form-control <?php if (isset($errors['password'])) echo 'is-invalid'; ?>" 
-               name="password" placeholder="Masukkan password">
+      
+      <!-- Password + Toggle -->
+      <div class="mb-3 text-start position-relative">
+        <input id="password" type="password" 
+          class="form-control <?php if (isset($errors['password'])) echo 'is-invalid'; ?>"
+          name="password" 
+          placeholder="Masukkan password">
         <?php if (isset($errors['password'])): ?>
           <div class="invalid-feedback"><?= $errors['password'] ?></div>
         <?php endif; ?>
+        
+        <span class="position-absolute top-50 end-0 translate-middle-y me-3" 
+              style="cursor:pointer;" 
+              onclick="togglePassword()">
+          <i data-feather="eye" id="eyeIcon" style="stroke:#333;"></i>
+        </span>
       </div>
 
       <div class="d-flex justify-content-between align-items-center mb-4">
@@ -164,6 +179,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-  <script>feather.replace();</script>
+  <script>
+    feather.replace();
+
+    function togglePassword() {
+      const passInput = document.getElementById("password");
+      const eyeIcon = document.getElementById("eyeIcon");
+
+      if (passInput.type === "password") {
+        passInput.type = "text";
+        eyeIcon.setAttribute("data-feather", "eye-off");
+      } else {
+        passInput.type = "password";
+        eyeIcon.setAttribute("data-feather", "eye");
+      }
+      feather.replace(); // refresh ikon
+    }
+  </script>   
 </body>
 </html>

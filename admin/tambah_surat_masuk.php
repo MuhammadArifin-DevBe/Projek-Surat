@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'function.php';
+require '../function.php';
 
 if (!isset($_SESSION['login']) || !isset($_SESSION['email'])) {
   header("Location: login.php");
