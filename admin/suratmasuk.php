@@ -45,7 +45,8 @@ if (!empty($params)) {
 }
 mysqli_stmt_execute($stmt);
 $suratMasuk = mysqli_stmt_get_result($stmt);
-/* --- ambil data user untuk sidebar --- */
+
+// ambil data user untuk sidebar
 $userId   = $_SESSION['id'] ?? 0;
 $username = 'User';
 $email    = '-';

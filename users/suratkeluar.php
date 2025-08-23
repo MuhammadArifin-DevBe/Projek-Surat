@@ -39,6 +39,17 @@ $suratKeluar = mysqli_query($conn, $queryKeluar);
     background-color: white;
     background-position: center;
   }
+  .avatar-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    /* bikin bulat */
+    object-fit: cover;
+    /* isi penuh */
+    border: 2px solid #fff;
+    /* biar rapi ada border putih */
+    background-color: #f0f0f0;
+  }
 </style>
 
 
@@ -50,16 +61,47 @@ $suratKeluar = mysqli_query($conn, $queryKeluar);
         Sistem Surat Keluar & Masuk<br>
         <small class="fw-normal">Laboratorium Komputer</small>
       </a>
-      <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-        <span class="navbar-text">
-          <a href="../logout.php" class="btn btn-primary d-flex align-items-center gap-2">
-            <i data-feather="user"></i> Logout
-          </a>
-        </span>
+      <!-- Avatar (klik untuk buka sidebar) -->
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarText">
+        <div class="d-flex align-items-center gap-2">
+          <!-- Avatar (klik untuk buka sidebar) -->
+          <img src="avatar.php" alt="Avatar" class="avatar-thumb"
+            title="Profil" data-bs-toggle="offcanvas" data-bs-target="#profileSidebar">
+        </div>
       </div>
     </div>
   </nav>
+
+  <!-- Sidebar Profile -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="profileSidebar" aria-labelledby="profileSidebarLabel">
+    <div class="offcanvas-header bg-primary text-white">
+      <div class="d-flex align-items-center gap-2">
+        <img src="avatar.php" alt="Avatar" class="avatar-thumb">
+        <div>
+          <h5 class="offcanvas-title mb-0" id="profileSidebarLabel"><?= htmlspecialchars($username) ?></h5>
+          <small class="opacity-75"><?= htmlspecialchars($email) ?></small>
+        </div>
+      </div>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="list-group mb-3">
+        <a href="update_profile.php" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
+          <i data-feather="user"></i><span>My Profil</span>
+        </a>
+        <a href="../logout.php" class="list-group-item list-group-item-action d-flex align-items-center gap-2 text-danger">
+          <i data-feather="log-out"></i><span>Logout</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  </div>
+  </nav>
+
 
   <div class="card mt-5 mx-3">
     <div class="card-body tree border-bottom" id="treeNav">

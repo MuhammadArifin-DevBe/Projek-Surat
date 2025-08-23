@@ -1,6 +1,6 @@
 <?php
 require '../vendor/autoload.php';
-require '../function.php'; // koneksi $conn
+require '../function.php';
 
 use LasseRafn\InitialAvatarGenerator\InitialAvatar;
 
@@ -10,14 +10,22 @@ if (!isset($_SESSION['login'])) {
     exit;
 }
 
-$userId = $_SESSION['id']; // ambil id user dari session
+$userId = $_SESSION['id'];
+$res = mysqli_query($conn, "SELECT username, avatar FROM users WHERE id='$userId'");
+$user = mysqli_fetch_assoc($res);
 
-// query nama user dari database
-$res = mysqli_query($conn, "SELECT username FROM users WHERE id='$userId' LIMIT 1");
-$row = mysqli_fetch_assoc($res);
-$name = $row ? $row['username'] : 'Default User';
+if ($user && $user['avatar']) {
+    // kalau user punya avatar upload → tampilkan file
+    $file = "../uploads/avatars/" . $user['avatar'];
+    if (file_exists($file)) {
+        header("Content-Type: image/png");
+        readfile($file);
+        exit;
+    }
+}
 
-// generate avatar
+// fallback: avatar inisial
+$name = $user ? $user['username'] : "User";
 $avatar = new InitialAvatar();
 $image  = $avatar->name($name)->generate();
 
