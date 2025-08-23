@@ -1,4 +1,5 @@
 <?php
+session_start();
 require '../function.php';
 
 // Ambil data jumlah surat masuk per tanggal
@@ -50,7 +51,25 @@ foreach ($allDates as $tgl) {
   $masukData[] = isset($dataM[$tgl]) ? $dataM[$tgl] : 0;
   $keluarData[] = isset($dataK[$tgl]) ? $dataK[$tgl] : 0;
 }
+$userId   = $_SESSION['id'] ?? 0;
+$username = 'User';
+$email    = '-';
+
+if ($userId) {
+  // lebih aman pakai prepared statement
+  if ($stmt = mysqli_prepare($conn, "SELECT username, email FROM users WHERE id = ? LIMIT 1")) {
+    mysqli_stmt_bind_param($stmt, "i", $userId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if ($row = mysqli_fetch_assoc($result)) {
+      $username = $row['username'] ?? $username;
+      $email    = $row['email'] ?? $email;
+    }
+    mysqli_stmt_close($stmt);
+  }
+}
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -69,30 +88,69 @@ foreach ($allDates as $tgl) {
     background-color: white;
     background-position: center;
   }
+
+  .avatar-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    /* bikin bulat */
+    object-fit: cover;
+    /* isi penuh */
+    border: 2px solid #fff;
+    /* biar rapi ada border putih */
+    background-color: #f0f0f0;
+  }
 </style>
 
 <body>
 
   <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg bg-primary">
+  <nav class="navbar navbar-expand-lg bg-primary" id="navbar">
     <div class="container-fluid mb-3 mt-3">
       <img src="../img/uniska.png" alt="Logo Uniska">
-      <a class="navbar-brand fw-bold" href="#">
+      <a class="navbar-brand fw-bold text-white" href="#">
         Sistem Surat Keluar & Masuk<br>
         <small class="fw-normal">Laboratorium Komputer</small>
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText">
+      <!-- Avatar (klik untuk buka sidebar) -->
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-        <span class="navbar-text">
-          <a href="logout.php" class="btn btn-primary d-flex align-items-center gap-2">
-            <i data-feather="user"></i> Logout
-          </a>
-        </span>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarText">
+        <div class="d-flex align-items-center gap-2">
+          <!-- Avatar (klik untuk buka sidebar) -->
+          <img src="avatar.php" alt="Avatar" class="avatar-thumb"
+            title="Profil" data-bs-toggle="offcanvas" data-bs-target="#profileSidebar">
+        </div>
       </div>
     </div>
+  </nav>
+
+  <!-- Sidebar Profile -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="profileSidebar" aria-labelledby="profileSidebarLabel">
+    <div class="offcanvas-header bg-primary text-white">
+      <div class="d-flex align-items-center gap-2">
+        <img src="avatar.php" alt="Avatar" class="avatar-thumb">
+        <div>
+          <h5 class="offcanvas-title mb-0" id="profileSidebarLabel"><?= htmlspecialchars($username) ?></h5>
+          <small class="opacity-75"><?= htmlspecialchars($email) ?></small>
+        </div>
+      </div>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="list-group mb-3">
+        <a href="update_profile.php" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
+          <i data-feather="user"></i><span>My Profil</span>
+        </a>
+        <a href="../logout.php" class="list-group-item list-group-item-action d-flex align-items-center gap-2 text-danger">
+          <i data-feather="log-out"></i><span>Logout</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  </div>
   </nav>
 
   <!-- NAVIGASI SAMPING -->
@@ -112,6 +170,7 @@ foreach ($allDates as $tgl) {
       </a>
       <a href="user.php" class="<?= basename($_SERVER['PHP_SELF']) === 'user.php' ? 'active' : '' ?>">
         <i data-feather="users"></i> Data Pengguna
+      </a>
     </div>
 
 
