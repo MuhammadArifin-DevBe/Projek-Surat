@@ -6,7 +6,7 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 include '../function.php';
-/* --- ambil data user untuk sidebar --- */
+// ambil data user untuk sidebar
 $userId   = $_SESSION['id'] ?? 0;
 $username = 'User';
 $email    = '-';
