@@ -35,6 +35,7 @@ include '../function.php';
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
                 <span class="navbar-text">
+                    <img src="avatar.php" alt="Avatar" width="100" height="100">
                     <a href="../logout.php" class="btn btn-primary d-flex align-items-center gap-2">
                         <i data-feather="user"></i> Logout
                     </a>

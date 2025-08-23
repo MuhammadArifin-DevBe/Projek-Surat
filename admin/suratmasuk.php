@@ -83,7 +83,7 @@ $suratMasuk = mysqli_stmt_get_result($stmt);
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
         <span class="navbar-text">
-          <a href="logout.php" class="btn btn-primary d-flex align-items-center gap-2">
+          <a href="../logout.php" class="btn btn-primary d-flex align-items-center gap-2">
             <i data-feather="user"></i> Logout
           </a>
         </span>
